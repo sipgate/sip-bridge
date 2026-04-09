@@ -1,67 +1,80 @@
 # sipgate SIP Bridge
 
-Minimaler Asterisk-Container, der sipgate Trunking mit einer beliebigen AI-Voice-Plattform verbindet.
+Minimal Asterisk container that connects sipgate trunking to any AI voice platform.
 
-**Was macht das?** Registriert sich bei sipgate, nimmt eingehende Calls an und leitet sie per SIP an die AI-Plattform weiter.
+**What does it do?** Registers with sipgate, accepts incoming calls, and forwards them via SIP to the AI platform of your choice.
 
 ## Quick Start
 
 ```bash
-# 1. Repo klonen / entpacken
+# 1. Clone / unpack
 cd sip-bridge
 
-# 2. .env anlegen
+# 2. Create .env
 cp .env.example .env
 
-# 3. .env anpassen — eigene Werte eintragen:
+# 3. Edit .env — fill in your values:
 #    SIPGATE_USER, SIPGATE_PASS, AI_SIP_HOST
 
-# 4. Starten
+# 4. Start
 docker compose up -d
 
-# 5. Logs & Status prüfen
+# 5. Check logs & status
 docker logs -f sip-bridge
 ```
 
-## Konfiguration (.env)
+## Configuration (.env)
 
-| Variable | Beschreibung | Beispiel |
+| Variable | Description | Example |
 |---|---|---|
-| `SIPGATE_USER` | sipgate Trunk-Account | `1234567t0` |
-| `SIPGATE_PASS` | sipgate Passwort | `geheim123` |
-| `AI_SIP_HOST` | SIP-Host der AI-Plattform | `sip.rtc.elevenlabs.io` |
-| `AI_SIP_PORT` | SIP-Port (meist 5060) | `5060` |
-| `AI_SIP_TRANSPORT` | Transportprotokoll | `tcp` |
+| `SIPGATE_USER` | sipgate trunk account | `1234567t0` |
+| `SIPGATE_PASS` | sipgate password | `secret123` |
+| `AI_SIP_HOST` | SIP host of the AI platform | `sip.rtc.elevenlabs.io` |
+| `AI_SIP_PORT` | SIP port (usually 5060) | `5060` |
+| `AI_SIP_TRANSPORT` | Transport protocol | `tcp` |
 
-## Voraussetzungen
+## Requirements
 
-- VPS mit öffentlicher IP und Docker (z.B. Hetzner CX22, ~4€/Monat)
-- `network_mode: host` ist gesetzt — SIP/RTP läuft direkt über das Host-Netzwerk
+- VPS with public IP and Docker (e.g. Hetzner CX22, ~€4/month)
+- `network_mode: host` is set — SIP/RTP runs directly over the host network
 
 ## Firewall
 
 ```bash
-ufw allow from 217.10.68.0/24 to any port 5060  # sipgate Signaling
-ufw allow 5060/tcp                                # AI-Plattform
-ufw allow 10000:10100/udp                         # RTP Media
+ufw allow from 217.10.68.0/24 to any port 5060  # sipgate signaling
+ufw allow 5060/tcp                                # AI platform
+ufw allow 10000:10100/udp                         # RTP media
 ```
 
 ## Debugging
 
 ```bash
-# Asterisk CLI öffnen
+# Open Asterisk CLI
 docker exec -it sip-bridge asterisk -rvvv
 
-# In der CLI:
-pjsip show registrations     # sipgate Registration prüfen
-pjsip show endpoints         # Endpoints anzeigen
-core show channels            # Aktive Calls
+# Inside the CLI:
+pjsip show registrations     # check sipgate registration
+pjsip show endpoints         # show endpoints
+core show channels            # active calls
 ```
 
-## AI-Plattform Seite
+## AI Platform Setup
 
-Die meisten AI-Voice-Plattformen haben eine Option "Import number from SIP trunk". Dort die öffentliche IP des VPS als Adresse eintragen.
+Most AI voice platforms have an "Import number from SIP trunk" option. Enter your VPS's public IP as the address.
 
-## Ressourcen
+### Authentication
 
-~30-50 MB RAM, <1% CPU idle, ~100 MB Disk.
+By default no SIP credentials are configured — the AI platform should use IP-based ACL authentication with "Allow all addresses". If your platform requires digest auth, set `AI_SIP_USER` and `AI_SIP_PASS` in `.env`.
+
+### Supported Platforms
+
+| Platform | SIP Host | Port | Transport |
+|---|---|---|---|
+| ElevenLabs | `sip.rtc.elevenlabs.io` | 5060 | tcp |
+| Vapi | `sip.vapi.ai` | 5060 | tcp |
+| Retell | `sip.retellai.com` | 5060 | tcp |
+| Bland AI | `sip.bland.ai` | 5060 | tcp |
+
+## Resources
+
+~30–50 MB RAM, <1% CPU idle, ~100 MB disk.

@@ -6,17 +6,17 @@ echo "sipgate User: ${SIPGATE_USER}"
 echo "AI Platform:  ${AI_SIP_HOST}:${AI_SIP_PORT} (${AI_SIP_TRANSPORT})"
 echo "=========================="
 
-# Template pjsip.conf mit env vars befüllen
+# Render pjsip.conf from template
 envsubst '${SIPGATE_USER} ${SIPGATE_PASS} ${AI_SIP_HOST} ${AI_SIP_PORT} ${AI_SIP_TRANSPORT}' \
   < /opt/config/pjsip.conf.tmpl \
   > /etc/asterisk/pjsip.conf
 
-# Statische Configs kopieren
+# Copy static configs
 cp /opt/config/extensions.conf /etc/asterisk/extensions.conf
 cp /opt/config/modules.conf /etc/asterisk/modules.conf
 
-# Rechte setzen
+# Set permissions
 chown -R asterisk:asterisk /etc/asterisk/
 
-echo "Config geschrieben, starte Asterisk..."
+echo "Config written, starting Asterisk..."
 exec asterisk -f -vvv
