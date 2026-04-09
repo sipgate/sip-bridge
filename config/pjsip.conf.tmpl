@@ -1,0 +1,76 @@
+; ============================================
+; TRANSPORTS
+; ============================================
+
+[transport-udp]
+type=transport
+protocol=udp
+bind=0.0.0.0:5060
+
+[transport-tcp]
+type=transport
+protocol=tcp
+bind=0.0.0.0:5060
+
+[transport-tls]
+type=transport
+protocol=tls
+bind=0.0.0.0:5061
+verify_server=no
+
+; ============================================
+; SIPGATE TRUNK (eingehend)
+; ============================================
+
+[sipgate]
+type=registration
+transport=transport-udp
+outbound_auth=sipgate-auth
+server_uri=sip:sipconnect.sipgate.de
+client_uri=sip:${SIPGATE_USER}@sipconnect.sipgate.de
+contact_user=${SIPGATE_USER}
+retry_interval=60
+
+[sipgate-auth]
+type=auth
+auth_type=userpass
+username=${SIPGATE_USER}
+password=${SIPGATE_PASS}
+
+[sipgate-endpoint]
+type=endpoint
+transport=transport-udp
+context=from-sipgate
+disallow=all
+allow=alaw
+allow=ulaw
+from_domain=sipconnect.sipgate.de
+
+[sipgate-identify]
+type=identify
+endpoint=sipgate-endpoint
+match=217.10.68.0/24
+match=217.116.112.0/20
+
+; ============================================
+; AI-PLATTFORM (ausgehend)
+; ============================================
+
+[ai-platform]
+type=endpoint
+transport=transport-${AI_SIP_TRANSPORT}
+context=to-ai
+aors=ai-platform-aor
+disallow=all
+allow=ulaw
+allow=alaw
+from_domain=${AI_SIP_HOST}
+
+[ai-platform-aor]
+type=aor
+contact=sip:${AI_SIP_HOST}:${AI_SIP_PORT}\;transport=${AI_SIP_TRANSPORT}
+
+[ai-platform-identify]
+type=identify
+endpoint=ai-platform
+match=${AI_SIP_HOST}
