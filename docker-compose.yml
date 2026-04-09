@@ -1,0 +1,7 @@
+services:
+  asterisk:
+    build: .
+    container_name: sip-bridge
+    restart: unless-stopped
+    network_mode: host
+    env_file: .env
