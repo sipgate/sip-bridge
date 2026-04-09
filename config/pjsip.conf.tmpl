@@ -16,6 +16,9 @@ protocol=udp
 bind=0.0.0.0:5060
 external_media_address=${EXTERNAL_IP}
 external_signaling_address=${EXTERNAL_IP}
+local_net=10.0.0.0/8
+local_net=172.16.0.0/12
+local_net=192.168.0.0/16
 
 [transport-tcp]
 type=transport
@@ -23,6 +26,9 @@ protocol=tcp
 bind=0.0.0.0:5060
 external_media_address=${EXTERNAL_IP}
 external_signaling_address=${EXTERNAL_IP}
+local_net=10.0.0.0/8
+local_net=172.16.0.0/12
+local_net=192.168.0.0/16
 
 [transport-tls]
 type=transport
@@ -31,6 +37,9 @@ bind=0.0.0.0:5061
 verify_server=no
 external_media_address=${EXTERNAL_IP}
 external_signaling_address=${EXTERNAL_IP}
+local_net=10.0.0.0/8
+local_net=172.16.0.0/12
+local_net=192.168.0.0/16
 
 ; ============================================
 ; SIPGATE TRUNK (inbound)
