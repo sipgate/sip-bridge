@@ -51,13 +51,12 @@ ufw allow 10000:10100/udp                          # RTP media
 ## Debugging
 
 ```bash
-# Open Asterisk CLI
-docker exec -it sip-bridge asterisk -rvvv
+docker exec sip-bridge asterisk -rx "pjsip show registrations"  # sipgate registration
+docker exec sip-bridge asterisk -rx "pjsip show endpoints"      # endpoints
+docker exec sip-bridge asterisk -rx "core show channels"         # active calls
 
-# Inside the CLI:
-pjsip show registrations     # check sipgate registration
-pjsip show endpoints         # show endpoints
-core show channels            # active calls
+# Interactive CLI
+docker exec -it sip-bridge asterisk -rvvv
 ```
 
 ## AI Platform Setup
