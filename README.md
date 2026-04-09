@@ -42,9 +42,10 @@ docker logs -f sip-bridge
 ## Firewall
 
 ```bash
-ufw allow from 217.10.68.0/24 to any port 5060  # sipgate signaling
-ufw allow 5060/tcp                                # AI platform
-ufw allow 10000:10100/udp                         # RTP media
+ufw allow from 217.10.68.0/24 to any port 5060    # sipgate signaling
+ufw allow from 217.116.112.0/20 to any port 5060  # sipgate signaling
+ufw allow 5060/tcp                                 # AI platform
+ufw allow 10000:10100/udp                          # RTP media
 ```
 
 ## Debugging
