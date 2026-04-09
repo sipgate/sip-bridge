@@ -6,17 +6,23 @@
 type=transport
 protocol=udp
 bind=0.0.0.0:5060
+external_media_address=${EXTERNAL_IP}
+external_signaling_address=${EXTERNAL_IP}
 
 [transport-tcp]
 type=transport
 protocol=tcp
 bind=0.0.0.0:5060
+external_media_address=${EXTERNAL_IP}
+external_signaling_address=${EXTERNAL_IP}
 
 [transport-tls]
 type=transport
 protocol=tls
 bind=0.0.0.0:5061
 verify_server=no
+external_media_address=${EXTERNAL_IP}
+external_signaling_address=${EXTERNAL_IP}
 
 ; ============================================
 ; SIPGATE TRUNK (inbound)

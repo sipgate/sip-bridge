@@ -3,5 +3,9 @@ services:
     build: .
     container_name: sip-bridge
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "5061:5061/tcp"
+      - "10000-10100:10000-10100/udp"
     env_file: .env

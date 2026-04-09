@@ -14,7 +14,7 @@ cd sip-bridge
 cp .env.example .env
 
 # 3. Edit .env — fill in your values:
-#    SIPGATE_USER, SIPGATE_PASS, AI_SIP_HOST
+#    EXTERNAL_IP, SIPGATE_USER, SIPGATE_PASS, AI_SIP_HOST
 
 # 4. Start
 docker compose up -d
@@ -27,6 +27,7 @@ docker logs -f sip-bridge
 
 | Variable | Description | Example |
 |---|---|---|
+| `EXTERNAL_IP` | Public IP of your server | `1.2.3.4` |
 | `SIPGATE_USER` | sipgate trunk account | `1234567t0` |
 | `SIPGATE_PASS` | sipgate password | `secret123` |
 | `AI_SIP_HOST` | SIP host of the AI platform | `sip.rtc.elevenlabs.io` |
@@ -35,8 +36,8 @@ docker logs -f sip-bridge
 
 ## Requirements
 
-- VPS with public IP and Docker (e.g. Hetzner CX22, ~€4/month)
-- `network_mode: host` is set — SIP/RTP runs directly over the host network
+- VPS or server with a **public IP address** and Docker installed (e.g. Hetzner CX22, ~€4/month)
+- Set `EXTERNAL_IP` to your server's public IP — Asterisk uses it to announce the correct RTP address behind Docker NAT
 
 ## Firewall
 

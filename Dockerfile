@@ -14,8 +14,8 @@ RUN rm -rf /etc/asterisk/*
 RUN printf '[options]\nrunuser = asterisk\nrungroup = asterisk\n' \
     > /etc/asterisk/asterisk.conf
 
-RUN printf '[general]\nrtpstart=10000\nrtpend=10100\n' \
-    > /etc/asterisk/rtp.conf
+RUN printf '[general]\nrtpstart=10000\nrtpend=10100\nexternaddr=${EXTERNAL_IP}\n' \
+    > /etc/asterisk/rtp.conf.tmpl
 
 RUN printf '[general]\n[logfiles]\nconsole => notice,warning,error\n' \
     > /etc/asterisk/logger.conf
