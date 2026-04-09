@@ -7,7 +7,7 @@ echo "AI Platform:  ${AI_SIP_HOST}:${AI_SIP_PORT} (${AI_SIP_TRANSPORT})"
 echo "=========================="
 
 # Render configs from templates
-envsubst '${SIPGATE_USER} ${SIPGATE_PASS} ${AI_SIP_HOST} ${AI_SIP_PORT} ${AI_SIP_TRANSPORT}' \
+envsubst '${EXTERNAL_IP} ${SIPGATE_USER} ${SIPGATE_PASS} ${AI_SIP_HOST} ${AI_SIP_PORT} ${AI_SIP_TRANSPORT}' \
   < /opt/config/pjsip.conf.tmpl \
   > /etc/asterisk/pjsip.conf
 
